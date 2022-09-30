@@ -5,7 +5,10 @@ module TicTacToe
   class Game
     def initialize
       @board = Board.new
-      @players = Array.new(2) { |i| Player.new(name: "player #{i + 1}") }
+      @players = [
+        Player.new(name: "player 1", symbol: 'X'),
+        Player.new(name: "player 2", symbol: 'O')
+      ]
       @current_player = @players[1]
       @winning_symbol = nil
     end
@@ -13,11 +16,13 @@ module TicTacToe
     def start
       while game_continues?
         switch_current_player
-        position = current_player.ask_input
+        position = current_player.ask_input(prompt: "> Please enter your move #{current_player}: ")
         board.update(position: position)
         puts board.render
       end
       show_the_winner if winning_symbol
+    rescue Interrupt
+      puts '> So long, and thanks for all the fish :)'
     end
 
     private
