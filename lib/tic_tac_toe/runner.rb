@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module TicTacToe
+  # Entry point
   class Runner
     def self.start!
-      raise NotImplementedError
+      Game.new.start
     end
   end
 end
