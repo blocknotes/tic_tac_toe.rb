@@ -10,15 +10,10 @@ module TicTacToe
       @symbol = symbol
     end
 
-    def ask_input(prompt:, input_adapter:)
-      print prompt
+    def ask_input(input_adapter:)
       input = input_adapter.read_string
       stripped_input = input&.upcase&.tr(' ', '')
-      if /\A[A-C][1-3]\z/.match?(stripped_input)
-        stripped_input.chars
-      else
-        puts "> Invalid input! #{Game::INTRO_LINE}"
-      end
+      stripped_input.chars if /\A[A-C][1-3]\z/.match?(stripped_input)
     end
 
     def to_s

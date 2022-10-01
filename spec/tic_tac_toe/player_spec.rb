@@ -7,27 +7,22 @@ RSpec.describe TicTacToe::Player do
 
   describe '#ask_input' do
     subject(:ask_input) do
-      player.new(name: 'Mat', symbol: 'X').ask_input(prompt: 'Some prompt', input_adapter: input_adapter)
+      player.new(name: 'Mat', symbol: 'X').ask_input(input_adapter: input_adapter)
     end
 
     context 'when " a 3 " is entered' do
       let(:input_adapter) { TicTacToe::Adapters::InputFakeAdapter.new(force_output: ' a 3 ') }
 
       it do
-        aggregate_failures do
-          expect { ask_input }.to output('Some prompt').to_stdout
-          expect(ask_input).to eq %w[A 3]
-        end
+        expect(ask_input).to eq %w[A 3]
       end
     end
 
     context 'with "Don\'t Panic." input' do
       let(:input_adapter) { TicTacToe::Adapters::InputFakeAdapter.new(force_output: "Don't Panic.") }
 
-      it 'shows an input error message and returns nil', :aggregate_failures do
-        result = :not_nil
-        expect { result = ask_input }.to output(/Invalid input!/).to_stdout
-        expect(result).to be_nil
+      it 'shows an input error message and returns nil' do
+        expect(ask_input).to be_nil
       end
     end
 
@@ -35,7 +30,6 @@ RSpec.describe TicTacToe::Player do
       let(:input_adapter) { TicTacToe::Adapters::InputFakeAdapter.new }
 
       it 'returns an array with 2 elements', :aggregate_failures do
-        expect { ask_input }.to output('Some prompt').to_stdout
         expect(ask_input).to be_an Array
         expect(ask_input.size).to eq 2
       end

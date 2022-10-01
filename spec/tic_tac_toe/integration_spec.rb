@@ -4,6 +4,7 @@ require 'spec_helper'
 
 RSpec.describe 'Integration' do
   let(:input_adapter) { TicTacToe::Adapters::InputFakeAdapter.new }
+  let(:output_adapter) { TicTacToe::Adapters::OutputFakeAdapter.new }
 
   context 'with a winning sequence of turns' do
     let(:sequence) do
@@ -22,7 +23,8 @@ RSpec.describe 'Integration' do
     end
 
     it 'plays a test game' do
-      expect { TicTacToe::Game.new(input_adapter: input_adapter).start }.to output(/player 2 \(with O\) won the game!\n\z/).to_stdout
+      TicTacToe::Game.new(input_adapter: input_adapter, output_adapter: output_adapter).start
+      expect(output_adapter.buffer.last).to include 'player 2 (with O) won the game!'
     end
   end
 
@@ -34,7 +36,8 @@ RSpec.describe 'Integration' do
     end
 
     it 'plays a test game' do
-      expect { TicTacToe::Game.new(input_adapter: input_adapter).start }.to output(/player 1 \(with X\) won the game!\n\z/).to_stdout
+      TicTacToe::Game.new(input_adapter: input_adapter, output_adapter: output_adapter).start
+      expect(output_adapter.buffer.last).to include 'player 1 (with X) won the game!'
     end
   end
 
@@ -46,7 +49,8 @@ RSpec.describe 'Integration' do
     end
 
     it 'plays a test game' do
-      expect { TicTacToe::Game.new(input_adapter: input_adapter).start }.to output(/Board is completed without a winner\n\z/).to_stdout
+      TicTacToe::Game.new(input_adapter: input_adapter, output_adapter: output_adapter).start
+      expect(output_adapter.buffer.last).to include 'Board is completed without a winner'
     end
   end
 end

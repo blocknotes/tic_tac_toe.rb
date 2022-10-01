@@ -2,6 +2,7 @@
 
 require 'tic_tac_toe'
 require 'tic_tac_toe/adapters/input_fake_adapter'
+require 'tic_tac_toe/adapters/output_fake_adapter'
 
 require 'debug'
 
