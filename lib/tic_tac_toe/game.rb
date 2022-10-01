@@ -16,8 +16,8 @@ module TicTacToe
     def start
       while game_continues?
         switch_current_player
-        position = current_player.ask_input(prompt: "> Please enter your move #{current_player}: ")
-        board.update(position: position)
+        column, row = current_player.ask_input(prompt: "> Please enter your move #{current_player}: ")
+        board.update(column: column, row: row, symbol: current_player.symbol)
         puts board.render
       end
       show_the_winner if winning_symbol

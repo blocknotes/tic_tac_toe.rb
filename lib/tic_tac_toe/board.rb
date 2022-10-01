@@ -3,6 +3,13 @@
 module TicTacToe
   # Handle the board
   class Board
+    COLUMNS = { 'A' => 0, 'B' => 1, 'C' => 2 }.freeze
+    ROWS = { '1' => 0, '2' => 1, '3' => 2 }.freeze
+
+    def initialize
+      @symbols = Array.new(3) { Array.new(3) }
+    end
+
     def check_completed_line
       puts '> [TODO] looks for a completed line'
       'X' # TMP
@@ -13,12 +20,26 @@ module TicTacToe
       true # TMP
     end
 
+    def inspect
+      @symbols.map { |rows| rows.map { |symbol| symbol.nil? ? '-' : symbol.to_s[0] }.join }
+    end
+
     def render
       '> [TODO] prints the board'
     end
 
-    def update(position:)
-      puts '> [TODO] updates the board state'
+    def update(row:, column:, symbol:)
+      row_index = ROWS[row]
+      column_index = COLUMNS[column]
+      return if row_index.nil? || column_index.nil? || !%w[X O].include?(symbol) # invalid argument
+      return false unless @symbols[row_index][column_index].nil? # place not available
+
+      @symbols[row_index][column_index] = symbol == 'X'
+      true
     end
+
+    private
+
+    attr_reader :symbols
   end
 end
