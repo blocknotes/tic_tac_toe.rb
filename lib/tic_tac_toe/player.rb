@@ -5,8 +5,6 @@ require 'readline'
 module TicTacToe
   # Handle a player
   class Player
-    INVALID_INPUT_ERROR = '> Invalid input: please use A, B or C for the column and 1, 2 or 3 for the row (ex. A1)'
-
     attr_reader :symbol
 
     def initialize(name:, symbol:)
@@ -20,7 +18,7 @@ module TicTacToe
       if /\A[A-C][1-3]\z/.match?(stripped_input)
         stripped_input.chars
       else
-        puts INVALID_INPUT_ERROR
+        puts "> Invalid input! #{Game::INTRO_LINE}"
       end
     end
 

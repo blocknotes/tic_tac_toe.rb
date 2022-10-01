@@ -3,6 +3,8 @@
 module TicTacToe
   # Handle the entire game
   class Game
+    INTRO_LINE = 'Please use A, B or C for the column and 1, 2 or 3 for the row (ex. A1)'
+
     def initialize
       @board = Board.new
       @players = [
@@ -14,13 +16,10 @@ module TicTacToe
     end
 
     def start
-      while game_continues?
-        switch_current_player
-        column, row = current_player.ask_input(prompt: "> Please enter your move #{current_player}: ")
-        board.update(column: column, row: row, symbol: current_player.symbol)
-        puts board.render
-      end
-      show_the_winner if winning_symbol
+      puts "> #{INTRO_LINE}"
+      game_loop
+      puts board.render
+      show_the_winner
     rescue Interrupt
       puts '> So long, and thanks for all the fish :)'
     end
@@ -32,13 +31,28 @@ module TicTacToe
       winning_symbol.nil? && board.empty_places_available?
     end
 
+    def game_loop
+      can_switch = true
+      while game_continues?
+        puts board.render
+        switch_current_player if can_switch
+        column, row = current_player.ask_input(prompt: '> Please enter your move: ')
+        can_switch = board.update(column: column, row: row, symbol: current_player.symbol)
+        puts '> Please choose an empty spot' unless can_switch
+      end
+    end
+
     def switch_current_player
       @current_player = current_player == players[0] ? players[1] : players[0]
+      puts "> It's #{current_player} turn"
     end
 
     def show_the_winner
-      puts '> [TODO] show_the_winner'
-      puts "> #{current_player} won the game!"
+      if winning_symbol
+        puts "> #{current_player} won the game!"
+      else
+        puts '> Board is completed without a winner'
+      end
     end
 
     attr_reader :board, :current_player, :players, :winning_symbol

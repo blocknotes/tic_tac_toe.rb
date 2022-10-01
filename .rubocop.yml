@@ -11,6 +11,10 @@ AllCops:
 Layout/TrailingWhitespace:
   Exclude:
     - spec/tic_tac_toe/board_spec.rb
+    - spec/tic_tac_toe/integration_spec.rb
 
 Lint/UnusedMethodArgument:
   Enabled: false
+
+RSpec/ExampleLength:
+  Max: 20

@@ -21,7 +21,7 @@ RSpec.describe TicTacToe::Player do
 
       it 'shows an input error message and returns nil', :aggregate_failures do
         result = :not_nil
-        expect { result = ask_input }.to output("#{TicTacToe::Player::INVALID_INPUT_ERROR}\n").to_stdout
+        expect { result = ask_input }.to output(/Invalid input!/).to_stdout
         expect(result).to be_nil
       end
     end
@@ -30,7 +30,7 @@ RSpec.describe TicTacToe::Player do
       let(:input) { nil }
 
       it 'shows an input error message' do
-        expect { ask_input }.to output("#{TicTacToe::Player::INVALID_INPUT_ERROR}\n").to_stdout
+        expect { ask_input }.to output(/Invalid input!/).to_stdout
       end
     end
   end
