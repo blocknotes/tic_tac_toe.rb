@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'tic_tac_toe'
+require 'tic_tac_toe/adapters/input_fake_adapter'
 
 require 'debug'
 

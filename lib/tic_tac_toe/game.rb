@@ -5,13 +5,14 @@ module TicTacToe
   class Game
     INTRO_LINE = 'Please use A, B or C for the column and 1, 2 or 3 for the row (ex. A1)'
 
-    def initialize
+    def initialize(input_adapter: Adapters::InputReadlineAdapter.new)
       @board = Board.new
       @players = [
         Player.new(name: "player 1", symbol: 'X'),
         Player.new(name: "player 2", symbol: 'O')
       ]
       @current_player = @players[1]
+      @input_adapter = input_adapter
       @winning_symbol = nil
     end
 
@@ -36,7 +37,7 @@ module TicTacToe
       while game_continues?
         puts board.render
         switch_current_player if can_switch
-        column, row = current_player.ask_input(prompt: '> Please enter your move: ')
+        column, row = current_player.ask_input(prompt: '> Please enter your move: ', input_adapter: input_adapter)
         can_switch = board.update(column: column, row: row, symbol: current_player.symbol)
         puts '> Please choose an empty spot' unless can_switch
       end
@@ -55,6 +56,6 @@ module TicTacToe
       end
     end
 
-    attr_reader :board, :current_player, :players, :winning_symbol
+    attr_reader :board, :current_player, :input_adapter, :players, :winning_symbol
   end
 end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'readline'
-
 module TicTacToe
   # Handle a player
   class Player
@@ -12,8 +10,9 @@ module TicTacToe
       @symbol = symbol
     end
 
-    def ask_input(prompt:)
-      input = Readline.readline(prompt, true)
+    def ask_input(prompt:, input_adapter:)
+      print prompt
+      input = input_adapter.read_string
       stripped_input = input&.upcase&.tr(' ', '')
       if /\A[A-C][1-3]\z/.match?(stripped_input)
         stripped_input.chars
