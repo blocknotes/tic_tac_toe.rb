@@ -23,7 +23,7 @@ module TicTacToe
     end
 
     def inspect
-      @symbols.map { |rows| rows.map { |symbol| symbol.nil? ? '-' : symbol.to_s[0] }.join }
+      symbols.map { |rows| rows.map { |symbol| symbol.nil? ? '-' : symbol.to_s[0] }.join }
     end
 
     def render
@@ -34,7 +34,7 @@ module TicTacToe
       row_index = ROWS[row]
       column_index = COLUMNS[column]
       return if row_index.nil? || column_index.nil? || !%w[X O].include?(symbol) # invalid argument
-      return false unless @symbols[row_index][column_index].nil? # place not available
+      return false unless symbols[row_index][column_index].nil? # place not available
 
       @symbols[row_index][column_index] = symbol == 'X'
       true
@@ -45,15 +45,15 @@ module TicTacToe
     def array_columns
       Array.new(3) do |r|
         Array.new(3) do |c|
-          @symbols[c][r]
+          symbols[c][r]
         end
       end
     end
 
     def array_diagonals
       [
-        Array.new(3) { |i| @symbols[i][i] },
-        Array.new(3) { |i| @symbols[i][2 - i] }
+        Array.new(3) { |i| symbols[i][i] },
+        Array.new(3) { |i| symbols[i][2 - i] }
       ]
     end
 
@@ -74,7 +74,7 @@ module TicTacToe
     end
 
     def render_table
-      @symbols.each_with_index.map do |rows, index|
+      symbols.each_with_index.map do |rows, index|
         "#{index + 1} #{render_rows(rows)}"
       end.join("\n  -----------\n")
     end
