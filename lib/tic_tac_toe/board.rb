@@ -12,13 +12,14 @@ module TicTacToe
     end
 
     def check_completed_line
-      puts '> [TODO] looks for a completed line'
-      'X' # TMP
+      result = evaluate_lines(array_rows) || evaluate_lines(array_columns) || evaluate_lines(array_diagonals)
+      return if result.nil?
+
+      result.first ? 'X' : 'O'
     end
 
     def empty_places_available?
-      puts '> [TODO] the board is still not full?'
-      true # TMP
+      symbols.flatten.include? nil
     end
 
     def inspect
@@ -40,6 +41,29 @@ module TicTacToe
     end
 
     private
+
+    def array_columns
+      Array.new(3) do |r|
+        Array.new(3) do |c|
+          @symbols[c][r]
+        end
+      end
+    end
+
+    def array_diagonals
+      [
+        Array.new(3) { |i| @symbols[i][i] },
+        Array.new(3) { |i| @symbols[i][2 - i] }
+      ]
+    end
+
+    def array_rows
+      symbols
+    end
+
+    def evaluate_lines(lines)
+      lines.map(&:uniq).find { |line| line.size == 1 && line != [nil] }
+    end
 
     def render_header
       ['', 'A', 'B', 'C'].join('   ')

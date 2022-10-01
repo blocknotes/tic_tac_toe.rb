@@ -5,12 +5,97 @@ require 'spec_helper'
 RSpec.describe TicTacToe::Board do
   subject(:board) { described_class }
 
+  def setup_board(target_board:, places:)
+    places.each do |col_row_symb|
+      column, row, symbol = col_row_symb
+      target_board.update(column: column, row: row, symbol: symbol)
+    end
+  end
+
   describe '#check_completed_line' do
-    it 'looks for a completed line'
+    subject(:check_completed_line) { board_instance.check_completed_line }
+
+    let(:board_instance) { board.new }
+
+    context 'with the initial set' do
+      it { is_expected.to be_nil }
+    end
+
+    context 'with some symbols without a completed line' do
+      before do
+        setup_board(target_board: board_instance, places: [%w[B 2 X], %w[C 3 O], %w[A 1 X]])
+      end
+
+      it 'returns nil', :aggregate_failures do
+        expect(board_instance.inspect).to eq ['t--', '-t-', '--f'] # NOTE: easier to check then the board setup :)
+        expect(check_completed_line).to be_nil
+      end
+    end
+
+    context 'with a completed column' do
+      before do
+        setup_board(target_board: board_instance, places: [%w[B 2 X], %w[C 3 O], %w[B 1 X], %w[C 1 O], %w[B 3 X]])
+      end
+
+      it 'returns the winning symbol', :aggregate_failures do
+        expect(board_instance.inspect).to eq ['-tf', '-t-', '-tf']
+        expect(check_completed_line).to eq 'X'
+      end
+    end
+
+    context 'with a completed row' do
+      before do
+        setup_board(target_board: board_instance, places: [%w[C 3 O], %w[A 2 X], %w[B 3 O], %w[B 2 X], %w[A 3 O]])
+      end
+
+      it 'returns the winning symbol', :aggregate_failures do
+        expect(board_instance.inspect).to eq ['---', 'tt-', 'fff']
+        expect(check_completed_line).to eq 'O'
+      end
+    end
+
+    context 'with a completed diagonal' do
+      before do
+        setup_board(target_board: board_instance, places: [%w[B 2 X], %w[C 2 O], %w[A 1 X], %w[C 1 O], %w[C 3 X]])
+      end
+
+      it 'returns the winning symbol', :aggregate_failures do
+        expect(board_instance.inspect).to eq ['t-f', '-tf', '--t']
+        expect(check_completed_line).to eq 'X'
+      end
+    end
   end
 
   describe '#empty_places_available?' do
-    it 'returns true if the board is not full'
+    subject(:empty_places_available?) { board_instance.empty_places_available? }
+
+    let(:board_instance) { board.new }
+
+    context 'with the initial set' do
+      it { is_expected.to be_truthy }
+    end
+
+    context 'with 3 symbols' do
+      before do
+        setup_board(target_board: board_instance, places: [%w[B 2 X], %w[C 3 O], %w[A 1 X]])
+      end
+
+      it { is_expected.to be_truthy }
+    end
+
+    context 'with 9 symbols' do
+      before do
+        symbol = 'O'
+        %w[A B C].each do |column|
+          %w[1 2 3].each do |row|
+            symbol = symbol == 'O' ? 'X' : 'O'
+            board_instance.update(column: column, row: row, symbol: symbol)
+          end
+        end
+      end
+
+      it { is_expected.to be_falsey }
+    end
   end
 
   describe '#render' do
@@ -35,9 +120,7 @@ RSpec.describe TicTacToe::Board do
 
     context 'when some symbols are added' do
       before do
-        board_instance.update(column: 'B', row: '2', symbol: 'X')
-        board_instance.update(column: 'C', row: '3', symbol: 'O')
-        board_instance.update(column: 'A', row: '1', symbol: 'X')
+        setup_board(target_board: board_instance, places: [%w[B 2 X], %w[C 3 O], %w[A 1 X]])
       end
 
       it 'returns the updated board' do
