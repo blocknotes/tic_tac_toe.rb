@@ -3,6 +3,7 @@
 module TicTacToe
   # Handle the board
   class Board
+    CELL_CONTENT = { nil => '   ', true => ' X ', false => ' O ' }.freeze
     COLUMNS = { 'A' => 0, 'B' => 1, 'C' => 2 }.freeze
     ROWS = { '1' => 0, '2' => 1, '3' => 2 }.freeze
 
@@ -25,7 +26,7 @@ module TicTacToe
     end
 
     def render
-      '> [TODO] prints the board'
+      ['', render_header, render_table].join("\n")
     end
 
     def update(row:, column:, symbol:)
@@ -39,6 +40,20 @@ module TicTacToe
     end
 
     private
+
+    def render_header
+      ['', 'A', 'B', 'C'].join('   ')
+    end
+
+    def render_rows(rows)
+      rows.map { |symbol| CELL_CONTENT[symbol] }.join('|')
+    end
+
+    def render_table
+      @symbols.each_with_index.map do |rows, index|
+        "#{index + 1} #{render_rows(rows)}"
+      end.join("\n  -----------\n")
+    end
 
     attr_reader :symbols
   end

@@ -8,5 +8,9 @@ require:
 AllCops:
   NewCops: enable
 
+Layout/TrailingWhitespace:
+  Exclude:
+    - spec/tic_tac_toe/board_spec.rb
+
 Lint/UnusedMethodArgument:
   Enabled: false

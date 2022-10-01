@@ -14,7 +14,45 @@ RSpec.describe TicTacToe::Board do
   end
 
   describe '#render' do
-    it 'returns the board table'
+    subject(:render) { board_instance.render }
+
+    let(:board_instance) { board.new }
+
+    context 'with the initial set' do
+      it 'returns the empty board' do
+        board_output = "#{render}\n" # NOTE: add a \n due to HEREDOC format
+        expect(board_output).to eq <<~BOARD
+
+             A   B   C
+          1    |   |   
+            -----------
+          2    |   |   
+            -----------
+          3    |   |   
+        BOARD
+      end
+    end
+
+    context 'when some symbols are added' do
+      before do
+        board_instance.update(column: 'B', row: '2', symbol: 'X')
+        board_instance.update(column: 'C', row: '3', symbol: 'O')
+        board_instance.update(column: 'A', row: '1', symbol: 'X')
+      end
+
+      it 'returns the updated board' do
+        board_output = "#{render}\n" # NOTE: add a \n due to HEREDOC format
+        expect(board_output).to eq <<~BOARD
+
+             A   B   C
+          1  X |   |   
+            -----------
+          2    | X |   
+            -----------
+          3    |   | O 
+        BOARD
+      end
+    end
   end
 
   describe '#update' do
