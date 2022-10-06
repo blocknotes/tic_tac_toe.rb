@@ -25,7 +25,7 @@ RSpec.describe TicTacToe::Game do
       before do
         allow(TicTacToe::Board).to receive(:new).and_return(board)
         allow(board).to receive(:check_completed_line).and_return(nil, nil, 'X')
-        allow(input_adapter).to receive(:read_string).and_return('B2', 'A1')
+        allow(input_adapter).to receive(:read_string).and_return('John', 'Jane', 'B2', 'A1')
       end
 
       it 'starts a new game', :aggregate_failures do
@@ -33,14 +33,16 @@ RSpec.describe TicTacToe::Game do
 
         expected_output = [
           "> Please use A, B or C for the column and 1, 2 or 3 for the row (ex. A1)\n",
+          "> Enter player name 1: ",
+          "> Enter player name 2: ",
           "[board rendering]\n",
-          "> It's player 1 (with X) turn\n",
+          "> It's John (with X) turn\n",
           "> Please enter your move: ",
           "[board rendering]\n",
-          "> It's player 2 (with O) turn\n",
+          "> It's Jane (with O) turn\n",
           "> Please enter your move: ",
           "[board rendering]\n",
-          "> player 2 (with O) won the game!\n"
+          "> Jane (with O) won the game!\n"
         ]
         expect(output_adapter.buffer).to eq expected_output
 

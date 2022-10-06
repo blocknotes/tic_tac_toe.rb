@@ -16,6 +16,10 @@ module TicTacToe
       stripped_input.chars if /\A[A-C][1-3]\z/.match?(stripped_input)
     end
 
+    def insert_name(input_adapter:)
+      @name = input_adapter.read_string
+    end
+
     def to_s
       "#{name} (with #{symbol})"
     end

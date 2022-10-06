@@ -36,6 +36,18 @@ RSpec.describe TicTacToe::Player do
     end
   end
 
+  describe '#insert_name' do
+    subject(:insert_name) do
+      player.new(name: 'Mat', symbol: 'X').insert_name(input_adapter: input_adapter)
+    end
+
+    context 'when a "some name" is entered' do
+      let(:input_adapter) { TicTacToe::Adapters::InputFakeAdapter.new(force_output: 'some name') }
+
+      it { is_expected.to start_with 'some name' }
+    end
+  end
+
   describe '#to_s' do
     subject(:to_s) { player.new(name: 'Mat', symbol: 'X').to_s }
 

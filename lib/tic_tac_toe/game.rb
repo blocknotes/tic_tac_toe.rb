@@ -19,6 +19,7 @@ module TicTacToe
 
     def start
       dev_out << "> #{INTRO_LINE}"
+      enter_player_names
       game_loop
       dev_out << board.render
       show_the_winner
@@ -27,6 +28,13 @@ module TicTacToe
     end
 
     private
+
+    def enter_player_names
+      players.each_with_index do |player, index|
+        dev_out.<<("> Enter player name #{index + 1}: ", newline: false)
+        player.insert_name(input_adapter: dev_in)
+      end
+    end
 
     def game_continues?
       @winning_symbol = board.check_completed_line
